@@ -1,0 +1,30 @@
+---
+
+- hosts: lamp-www
+  become: yes
+
+
+  vars_files:
+    - vars.yml
+
+  roles:
+    - geerlingguy.firewall
+    - geerlingguy.repo-epel
+    - geerlingguy.apache
+    - geerlingguy.php
+    - geerlingguy.php-mysql
+    - geerlingguy.php-memcached
+
+
+  tasks:
+    - name: supprimmer la page par defaut de apache
+      file:
+        path: /var/www/html/index.html
+        state: absent
+    - name: copier la page d'accueil du serveur
+      template: 
+        src: templates/index.php.j2
+        dest: /var/www/html/index.php
+
+
+
